@@ -171,6 +171,7 @@ public class cl4cds {
 
             if ("NULL class loader".equals(loader) ||
                 loader.contains("of <bootloader>") || // this is JDK 11 syntax
+                loader.contains("org/jboss/modules/ModuleClassLoader") ||
                 loader.contains("jdk/internal/loader/ClassLoaders$PlatformClassLoader" /* && source == jrt image */) ||
                 loader.contains("jdk/internal/loader/ClassLoaders$AppClassLoader" /* && source == jar file */)) {
               out.println(name.replace('.', '/') + " id: " + klass);
