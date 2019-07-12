@@ -222,6 +222,10 @@ public class cl4cds {
               if (interf != null) {
                 deps.addAll(Arrays.asList(interf.split("\\s")));
               }
+              if (DBG) {
+                  System.err.println("DebugInfo: deps: " + deps);
+                  System.err.println("DebugInfo interfs: " + interf);
+              }
               if (klassSet.containsAll(deps)) {
                 if (source.equals(nameSourceMap.get(name))) {
                   System.err.println("Skipping " + name + " from " + sourceFile + " - reason: already dumped");
