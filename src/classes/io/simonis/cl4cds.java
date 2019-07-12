@@ -171,7 +171,7 @@ public class cl4cds {
 
             if ("NULL class loader".equals(loader) ||
                 loader.contains("of <bootloader>") || // this is JDK 11 syntax
-                loader.contains("org/jboss/modules/ModuleClassLoader") ||
+                loader.contains("of 'bootstrap'") || // this is JDK 12 syntax
                 loader.contains("jdk/internal/loader/ClassLoaders$PlatformClassLoader" /* && source == jrt image */) ||
                 loader.contains("jdk/internal/loader/ClassLoaders$AppClassLoader" /* && source == jar file */)) {
               out.println(name.replace('.', '/') + " id: " + klass);
@@ -316,7 +316,7 @@ public class cl4cds {
   private static Status checkClass(String name, String source) {
     if (Files.isDirectory(Paths.get(source))) {
       try (InputStream in = new FileInputStream(source + name + ".class")) {
-        if (classVersion(in) < 49) return Status.PRE_15;
+        if (classVersion(in) <= 49) return Status.PRE_15;
         return Status.OK;
       } catch (IOException e) {
         if (DBG) {
@@ -329,7 +329,7 @@ public class cl4cds {
       try (JarFile jar = new JarFile(source)) {
         ZipEntry ze = jar.getEntry(name + ".class");
         if (ze != null) {
-          if (classVersion(jar.getInputStream(ze)) < 49) return Status.PRE_15;
+          if (classVersion(jar.getInputStream(ze)) <= 49) return Status.PRE_15;
           return Status.OK;
         }
         else if (DBG) {
